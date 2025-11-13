@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "api-envios-fastapi-2025",
+		"name": "API de Gestión de Envíos - FastAPI",
+		"description": "Colección de Postman para probar la API REST de gestión de envíos desarrollada con FastAPI.\n\n**Stack Tecnológico:**\n- Python 3.11+\n- FastAPI 0.121.1\n- Uvicorn 0.38.0\n\n**Autores:** Sammy Porras, Daniel Vizcarra\n**Curso:** Integración de Sistemas\n**Institución:** Universidad de Las Américas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El servicio está saludable\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.status).to.eql(\"ok\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Endpoint de salud para verificar que el servicio está funcionando correctamente. Útil para monitoreo y despliegues automatizados."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Todos los Envíos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"La respuesta es un array\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});",
+							"",
+							"pm.test(\"Cada envío tiene los campos requeridos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    if (jsonData.length > 0) {",
+							"        pm.expect(jsonData[0]).to.have.property('id');",
+							"        pm.expect(jsonData[0]).to.have.property('destinatario');",
+							"        pm.expect(jsonData[0]).to.have.property('direccion');",
+							"        pm.expect(jsonData[0]).to.have.property('estado');",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/envios",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"envios"
+					]
+				},
+				"description": "Retorna la lista completa de envíos almacenados en el sistema."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Envío por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"El envío tiene el ID correcto\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"El envío tiene todos los campos requeridos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('destinatario');",
+							"    pm.expect(jsonData).to.have.property('direccion');",
+							"    pm.expect(jsonData).to.have.property('estado');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/envios/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"envios",
+						"1"
+					]
+				},
+				"description": "Retorna un envío específico basado en su ID."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Envío Inexistente (404)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"La respuesta contiene mensaje de error\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('detail');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/envios/999",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"envios",
+						"999"
+					]
+				},
+				"description": "Prueba el manejo de errores cuando se solicita un envío que no existe."
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Nuevo Envío",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"El envío fue creado correctamente\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData.destinatario).to.eql(\"Laura Martínez\");",
+							"    pm.expect(jsonData.estado).to.eql(\"Pendiente\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 5,\n    \"destinatario\": \"Laura Martínez\",\n    \"direccion\": \"Av. Shyris 890, Quito\",\n    \"estado\": \"Pendiente\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/envios",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"envios"
+					]
+				},
+				"description": "Crea un nuevo envío en el sistema. El ID debe ser único."
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Envío con ID Duplicado (400)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"La respuesta contiene mensaje de error\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('detail');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"destinatario\": \"Test Duplicado\",\n    \"direccion\": \"Dirección Test\",\n    \"estado\": \"Pendiente\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/envios",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"envios"
+					]
+				},
+				"description": "Prueba el manejo de errores cuando se intenta crear un envío con un ID que ya existe."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Información de la API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"La respuesta contiene información de la API\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('mensaje');",
+							"    pm.expect(jsonData).to.have.property('version');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "Endpoint raíz que proporciona información básica de la API."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
