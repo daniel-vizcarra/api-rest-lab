@@ -26,7 +26,6 @@ class Envio(BaseModel):
             }
         }
 
-# Base de datos en memoria (simula una BD real)
 envios_db: List[Envio] = [
     Envio(id=1, destinatario="María García", direccion="Calle 10 de Agosto 456, Quito", estado="Entregado"),
     Envio(id=2, destinatario="Carlos López", direccion="Av. Amazonas 789, Quito", estado="En tránsito"),

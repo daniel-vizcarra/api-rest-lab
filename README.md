@@ -185,13 +185,9 @@ api-rest-lab/
 
 **Integración de Sistemas**
 Universidad de Las Américas
-Facultad de Ingenierías y Ciencias Agropecuarias
+Facultad de Ingenierías y Ciencias Aplicadas
 Ingeniería De Software
 
 ## Fecha
 
-14/11/2025
-
-## Licencia
-
-Este proyecto es parte de un taller académico de la Universidad de Las Américas.
+13/11/2025
